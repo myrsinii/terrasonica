@@ -45,4 +45,5 @@ Headphones recommended.
 ## Use of AI
 
 - The cockpit artwork was generated with Higgsfield (AI). It carries an AI mark in the game.
+- The intro film was AI-generated. It carries an AI mark while it plays.
 - The code was written with AI assistance (Claude, Anthropic).

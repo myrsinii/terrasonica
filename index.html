@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terra Sonica</title>
-<meta name="generator" content="Code written with AI assistance (Claude, Anthropic). Cockpit artwork AI-generated with Higgsfield.">
+<meta name="generator" content="Code written with AI assistance (Claude, Anthropic). Cockpit artwork AI-generated with Higgsfield. Intro film AI-generated.">
 
 <style>@font-face {
   font-family: 'JetBrains Mono';
@@ -258,7 +258,11 @@ body.ej-loading #start { visibility: hidden; }
   color: rgba(255,255,255,.45); opacity: 0; transition: opacity .6s; }
 #ts-intro.ts-hint .ts-skip { opacity: 1; }
 #ts-intro.black { background-color: #000; }
-#ts-intro.black canvas, #ts-intro.black .ts-skip { opacity: 0; }
+#ts-intro.black canvas, #ts-intro.black .ts-skip, #ts-intro.black #ts-intro-ai { opacity: 0; }
+#ts-intro-ai { position: absolute; right: 1.6vw; bottom: 2.4vh; display: flex; align-items: center; gap: .3em; z-index: 1;
+  font: 700 clamp(11px, .95vw, 16px)/1 var(--mono); color: #fff; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.6);
+  border-radius: 6px; padding: .3em .55em .3em .45em; transition: opacity 1s ease; pointer-events: none; }
+#ts-intro-ai svg { width: 1.15em; height: 1.15em; }
 #ts-intro.out { opacity: 0; pointer-events: none; }
 #ts-intro .ts-start { display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; cursor: pointer;
   font: 700 clamp(18px, 2.2vw, 34px) var(--mono); color: #1d1d1d; background: var(--neon); border-radius: 14px; padding: .5em 1.6em; }
@@ -312,7 +316,7 @@ body.ej-loading #start { visibility: hidden; }
 </style>
 </head>
 <body class="ej-loading">
-<div id="ts-intro" aria-label="Terra Sonica intro"><canvas id="ts-intro-c" aria-hidden="true"></canvas><p class="ts-skip">press space to skip</p></div>
+<div id="ts-intro" aria-label="Terra Sonica intro"><canvas id="ts-intro-c" aria-hidden="true"></canvas><div id="ts-intro-ai" role="img" aria-label="Intro film AI-generated" title="Intro film: AI-generated"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9z"/><path fill="currentColor" d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>AI</div><p class="ts-skip">press space to skip</p></div>
 <script>window.__tsIntroSrc={"frames": ["intro/f001.webp", "intro/f002.webp", "intro/f003.webp", "intro/f004.webp", "intro/f005.webp", "intro/f006.webp", "intro/f007.webp", "intro/f008.webp", "intro/f009.webp", "intro/f010.webp", "intro/f011.webp", "intro/f012.webp", "intro/f013.webp", "intro/f014.webp", "intro/f015.webp", "intro/f016.webp", "intro/f017.webp", "intro/f018.webp", "intro/f019.webp", "intro/f020.webp", "intro/f021.webp", "intro/f022.webp", "intro/f023.webp", "intro/f024.webp", "intro/f025.webp", "intro/f026.webp", "intro/f027.webp", "intro/f028.webp", "intro/f029.webp", "intro/f030.webp", "intro/f031.webp", "intro/f032.webp", "intro/f033.webp", "intro/f034.webp", "intro/f035.webp", "intro/f036.webp", "intro/f037.webp", "intro/f038.webp", "intro/f039.webp", "intro/f040.webp", "intro/f041.webp", "intro/f042.webp", "intro/f043.webp", "intro/f044.webp", "intro/f045.webp", "intro/f046.webp", "intro/f047.webp", "intro/f048.webp", "intro/f049.webp", "intro/f050.webp", "intro/f051.webp", "intro/f052.webp", "intro/f053.webp", "intro/f054.webp", "intro/f055.webp", "intro/f056.webp", "intro/f057.webp", "intro/f058.webp", "intro/f059.webp", "intro/f060.webp", "intro/f061.webp", "intro/f062.webp", "intro/f063.webp", "intro/f064.webp", "intro/f065.webp", "intro/f066.webp", "intro/f067.webp", "intro/f068.webp", "intro/f069.webp", "intro/f070.webp", "intro/f071.webp", "intro/f072.webp", "intro/f073.webp", "intro/f074.webp", "intro/f075.webp", "intro/f076.webp", "intro/f077.webp", "intro/f078.webp", "intro/f079.webp", "intro/f080.webp", "intro/f081.webp", "intro/f082.webp", "intro/f083.webp", "intro/f084.webp", "intro/f085.webp", "intro/f086.webp", "intro/f087.webp", "intro/f088.webp", "intro/f089.webp", "intro/f090.webp", "intro/f091.webp", "intro/f092.webp", "intro/f093.webp", "intro/f094.webp", "intro/f095.webp", "intro/f096.webp", "intro/f097.webp"], "audio": "intro/intro.flac"};</script>
 <script>/* Terra Sonica: intro film, first thing on the page. Played as image frames on a canvas
    (not a <video>), because some browsers report they can play a video and then never decode
