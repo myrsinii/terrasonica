@@ -46,4 +46,4 @@ Headphones recommended.
 
 - The cockpit artwork was generated with Higgsfield (AI). It carries an AI mark in the game.
 - The intro film was AI-generated. It carries an AI mark while it plays.
-- The code was written with AI assistance (Claude, Anthropic).
+- The code and the in-game texts were written with AI assistance (Claude, Anthropic). The texts were drafted from our direction and NASA's pages, and reviewed by the team.
