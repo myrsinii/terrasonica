@@ -253,7 +253,7 @@ body.ej-loading #start { visibility: hidden; }
 /* intro film: first thing on screen, then black, then the start window */
 #ts-intro { position: fixed; inset: 0; z-index: 40; background: #131313; opacity: 1; transition: opacity 1s ease, background-color 1s ease; }
 #ts-intro[hidden] { display: none; }
-#ts-intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 1s ease; }
+#ts-intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity 1s ease; }
 #ts-intro .ts-skip { position: absolute; left: 0; right: 0; bottom: 3.5vh; margin: 0; text-align: center; font: 400 13px var(--mono);
   color: rgba(255,255,255,.45); opacity: 0; transition: opacity .6s; }
 #ts-intro.ts-hint .ts-skip { opacity: 1; }
@@ -343,15 +343,10 @@ window.TSIntro = (function () {
       setTimeout(function () { box.hidden = true; if (audio) { try { audio.pause(); } catch (e) {} } }, 1100);
     }, 1100);
   }
-  function fit() {
-    var d = Math.min(2, window.devicePixelRatio || 1), w = Math.round(innerWidth * d), h = Math.round(innerHeight * d);
-    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; if (last) draw(last); }
-  }
-  function draw(img) {
+  function draw(img) {                                             // canvas = film size; CSS scales it to the screen
     last = img;
-    var s = Math.min(cv.width / img.width, cv.height / img.height), w = img.width * s, h = img.height * s;
-    ctx.fillStyle = "#131313"; ctx.fillRect(0, 0, cv.width, cv.height);
-    ctx.drawImage(img, (cv.width - w) / 2, (cv.height - h) / 2, w, h);
+    if (cv.width !== img.width || cv.height !== img.height) { cv.width = img.width; cv.height = img.height; }
+    ctx.drawImage(img, 0, 0);
   }
   function load(k) {
     return fetch(src.frames[k]).then(function (r) { return r.blob(); }).then(function (b) { return createImageBitmap(b); })
@@ -374,17 +369,17 @@ window.TSIntro = (function () {
     })();
   }
 
-  fit(); window.addEventListener("resize", fit);
-  ctx.fillStyle = "#131313"; ctx.fillRect(0, 0, cv.width, cv.height);
+  cv.width = 1600; cv.height = 684; ctx.fillStyle = "#131313"; ctx.fillRect(0, 0, cv.width, cv.height);
   if (!N) { end(); }
   else {
     // load in order, a few at a time; start once the first second is ready (or everything is)
     var next = 0;
-    var pump = function () { if (next < N) { var k = next++; load(k).then(function () { if (!started && (got >= Math.min(N, 8) || got === N)) begin(); pump(); }); } };
+    var pump = function () { if (next < N) { var k = next++; load(k).then(function () { if (!started && got === N) begin(); pump(); }); } };
     for (var i = 0; i < 6; i++) pump();
     (function watch() {                                           // never hang if frames cannot load
       if (done || started) return;
-      if (performance.now() - t00 > 7000) return got ? begin() : end();
+      if (performance.now() - t00 > 4000 && got >= Math.min(N, 24)) return begin();
+      if (performance.now() - t00 > 9000) return got ? begin() : end();
       setTimeout(watch, 250);
     })();
   }
