@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Terra Sonica: intro test</title>
+<style>
+  body { margin: 0; background: #131313; color: #e8e8e8; font: 14px/1.5 monospace; }
+  video { display: block; width: 100%; max-height: 55vh; background: #000; }
+  #log { padding: 12px 16px; white-space: pre-wrap; }
+  button { font: 600 15px monospace; margin: 8px 16px; padding: 8px 18px; background: #39ff14; border: 0; border-radius: 8px; cursor: pointer; }
+  .bad { color: #ff6a6a; } .ok { color: #39ff14; }
+</style>
+</head>
+<body>
+<video id="v" playsinline preload="auto"><source src="intro/intro.mp4" type="video/mp4"><source src="intro/intro.webm" type="video/webm"></video>
+<button id="b">play with sound</button>
+<div id="log"></div>
+<script>
+var v = document.getElementById("v"), log = document.getElementById("log"), t0 = performance.now();
+function w(msg, cls) { var d = document.createElement("div"); if (cls) d.className = cls; d.textContent = ((performance.now() - t0) / 1000).toFixed(2) + "s  " + msg; log.appendChild(d); }
+w("browser: " + navigator.userAgent);
+w("can play mp4 (H.264): '" + v.canPlayType('video/mp4; codecs="avc1.640028, mp4a.40.2"') + "'");
+w("can play webm (VP9): '" + v.canPlayType('video/webm; codecs="vp9, opus"') + "'");
+try { w("autoplay policy: " + (navigator.getAutoplayPolicy ? navigator.getAutoplayPolicy("mediaelement") : "n/a")); } catch (e) { w("autoplay policy: n/a"); }
+["loadstart", "loadedmetadata", "loadeddata", "canplay", "play", "playing", "pause", "waiting", "stalled", "ended"].forEach(function (e) {
+  v.addEventListener(e, function () { w("event: " + e + "  (time " + v.currentTime.toFixed(2) + ", ready " + v.readyState + ", src " + (v.currentSrc.split("/").pop() || "-") + ")"); });
+});
+v.addEventListener("error", function () { w("VIDEO ERROR code " + (v.error && v.error.code) + " " + (v.error && v.error.message), "bad"); });
+var s = v.getElementsByTagName("source");
+for (var i = 0; i < s.length; i++) (function (el) { el.addEventListener("error", function () { w("SOURCE FAILED: " + el.getAttribute("src"), "bad"); }); })(s[i]);
+function tryPlay(muted, label) {
+  v.muted = muted;
+  var p = v.play();
+  if (p && p.then) p.then(function () { w(label + ": playing", "ok"); }, function (e) { w(label + ": refused (" + e.name + ": " + e.message + ")", "bad"); if (!muted) tryPlay(true, "autoplay muted"); });
+}
+tryPlay(false, "autoplay with sound");
+document.getElementById("b").onclick = function () { v.currentTime = 0; tryPlay(false, "click with sound"); };
+setTimeout(function () { w("after 6 s: time " + v.currentTime.toFixed(2) + ", paused " + v.paused + ", ready " + v.readyState + ", network " + v.networkState + ", size " + v.videoWidth + "x" + v.videoHeight); }, 6000);
+</script>
+</body>
+</html>
